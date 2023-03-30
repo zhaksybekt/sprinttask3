@@ -1,11 +1,33 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <title>Конвертер валют</title>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-</head>
-<style>
+    <title>Конвертер валют</title>
 
+</head>
+<body>
+<div>
+    <label for="from">Из:</label>
+    <select id="from">
+        <option value="KZT">Тенге</option>
+        <option value="USD">Доллары</option>
+        <option value="EUR">Евро</option>
+    </select>
+    <input type="number" id="amount" placeholder="введите сумму">
+</div>
+
+<div>
+    <label for="to">В:</label>
+    <select id="to">
+        <option value="KZT">Тенге</option>
+        <option value="USD">Доллары</option>
+        <option value="EUR">Евро</option>
+    </select>
+    <input type="number" id="result" disabled>
+</div>
+
+<button onclick="convert()">Конвертировать</button>
+<style>
     form {
         max-width: 600px;
         margin: 0 auto;
@@ -20,7 +42,7 @@
         margin-bottom: 20px;
     }
 
-
+    /* стили для полей ввода и выбора валюты */
     label {
         display: block;
         margin-bottom: 10px;
@@ -38,8 +60,59 @@
         margin-bottom: 20px;
     }
 
-
+    /* стили для кнопки */
     button {
         display: block;
-        width: 25%;
+
         padding: 10px 20px;
+        background-color: #4CAF50;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background-color: blue;
+    }
+
+    /* стили для результата */
+    .result {
+        text-align: center;
+        font-size: 24px;
+        font-weight: bold;
+        margin-top: 20px;
+        padding: 10px;
+        background-color: #d9edf7;
+        border: 2px solid #bce8f1;
+        border-radius: 5px;
+    }
+</style>
+<script >function convert() {
+    const from = document.getElementById("from").value;
+    const to = document.getElementById("to").value;
+    const amount = document.getElementById("amount").value;
+    let rate;
+
+    if (from === "KZT" && to === "USD") {
+        rate = 1 / 429;
+    } else if (from === "KZT" && to === "EUR") {
+        rate = 1 / 507;
+    } else if (from === "USD" && to === "KZT") {
+        rate = 431;
+    } else if (from === "USD" && to === "EUR") {
+        rate = 1 / 1.1828;
+    } else if (from === "EUR" && to === "KZT") {
+        rate = 509;
+    } else if (from === "EUR" && to === "USD") {
+        rate = 1.1828;
+    } else {
+        rate = 1;
+    }
+
+    const result = amount * rate;
+    document.getElementById("result").value = result.toFixed(2);
+}</script>
+</body>
+</html>
