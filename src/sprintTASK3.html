@@ -113,6 +113,14 @@
 
     const result = amount * rate;
     document.getElementById("result").value = result.toFixed(2);
+    const fromSelect = document.getElementById("from");
+    fromSelect.addEventListener("change", convert);
+
+    const toSelect = document.getElementById("to");
+    toSelect.addEventListener("change", convert);
+
+    const amountInput = document.getElementById("amount");
+    amountInput.addEventListener("input", convert);
 }</script>
 </body>
 </html>
