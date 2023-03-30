@@ -1,251 +1,45 @@
-<!DOCTYPE html>
 <html>
 <head>
     <title>Конвертер валют</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            text-align: center;
+<style>
 
-        }
-
-        h1 {
-            text-align: center;
-            margin: 20px 0;
-        }
-        form {
-
-            margin: 20px;
-            max-width: 300px;
-            text-align: center;
-        }
-
-        h2 {
-            font-size: 18px;
-            margin: 10px 0;
-        }
-
-        label {
-            display: block;
-            margin: 10px 0;
-        }
-
-        input[type="number"] {
-            width: 100%;
-            padding: 10px;
-            font-size: 16px;
-            margin-top: 5px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-sizing: border-box;
-        }
-
-        input[type="text"] {
-            width: 100%;
-            padding: 10px;
-            font-size: 16px;
-            margin-top: 5px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-sizing: border-box;
-        }
-
-        select {
-            width: 100%;
-            padding: 10px;
-            font-size: 16px;
-            margin-top: 5px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-sizing: border-box;
-        }
-
-        button {
-            width: 100%;
-            padding: 10px;
-            margin-top: 10px;
-            background-color: #008CBA;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-
-        button:hover {
-            background-color: #00688B;
-        }
-
-        input[type="text"][readonly] {
-            background-color: #ddd;
-            font-weight: bold;
-        }
-        form {
-            display: inline-block;
-            margin-right: 20px;
-        }
-        label {
-            display: block;
-            margin-bottom: 10px;
-        }
-        input[type="number"] {
-            width: 100%;
-            padding: 5px;
-            font-size: 16px;
-            margin-bottom: 10px;
-        }
-        input[type="text"] {
-            width: 100%;
-            padding: 5px;
-            font-size: 16px;
-            margin-bottom: 10px;
-        }
-
-        a{
-            font-size: 32px;
-            text-decoration: none;
-            color: #851d1d;
-        }
-
-    </style>
-</head>
-<body>
-<div class="navbar-brand">
-    <a href="#" > <b> BITLAB</b> CONVERTER</a>
-</div>
-<h1>Конвертер валют</h1>
-<form>
-    <h2>Тенге (KZT) в другие валюты</h2>
-    <label>
-        Сумма в KZT:
-        <input type="number" id="amountKZT" />
-    </label>
-    <label>
-        Выберите валюту:
-        <select id="currencyKZT">
-            <option value="USD">Доллар США (USD)</option>
-            <option value="EUR">Евро (EUR)</option>
-        </select>
-    </label>
-    <button onclick="convertKZT()">Конвертировать</button>
-    <label>
-        <input type="text" id="resultUSD" readonly />
-    </label>
-    <label>
-        <input type="text" id="resultEUR" readonly />
-    </label>
-</form>
-<form>
-    <h2>Доллар США (USD) в другие валюты</h2>
-    <label>
-        Сумма в USD:
-        <input type="number" id="amountUSD" />
-    </label>
-    <label>
-        Выберите валюту:
-        <select id="currencyUSD">
-            <option value="KZT">Тенге (KZT)</option>
-            <option value="EUR">Евро (EUR)</option>
-        </select>
-    </label>
-    <button onclick="convertUSD()">Конвертировать</button>
-    <label>
-        <input type="text" id="resultKZT" readonly />
-    </label>
-    <label>
-        <input type="text" id="resultEURUSD" readonly />
-    </label>
-</form>
-<form>
-    <h2>Евро (EUR) в другие валюты</h2>
-    <label>
-        Сумма в EUR:
-        <input type="number" id="amountEUR" />
-    </label>
-    <label>
-        Выберите валюту:
-        <select id="currencyEUR">
-            <option value="KZT">Тенге (KZT)</option>
-            <option value="USD">Доллар США (USD)</option>
-        </select>
-    </label>
-    <button onclick="convertEUR()">Конвертировать</button>
-    <label>
-        <input type="text" id="resultKZTEUR" readonly />
-    </label>      <label>
-    <input type="text" id="resultUSDEUR" readonly />
-</label>
-</form>
-<script>
-    const KZT_TO_USD_BUY = 429;
-    const KZT_TO_USD_SELL = 431;
-    const KZT_TO_EUR_BUY = 507;
-    const KZT_TO_EUR_SELL = 509;
-    const USD_TO_KZT_BUY = 1 / KZT_TO_USD_SELL;
-    const USD_TO_KZT_SELL = 1 / KZT_TO_USD_BUY;
-    const USD_TO_EUR_BUY = KZT_TO_EUR_BUY / KZT_TO_USD_SELL;
-    const USD_TO_EUR_SELL = KZT_TO_EUR_SELL / KZT_TO_USD_BUY;
-    const EUR_TO_KZT_BUY = 1 / KZT_TO_EUR_SELL;
-    const EUR_TO_KZT_SELL = 1 / KZT_TO_EUR_BUY;
-    const EUR_TO_USD_BUY = KZT_TO_USD_BUY / KZT_TO_EUR_SELL;
-    const EUR_TO_USD_SELL = KZT_TO_USD_SELL / KZT_TO_EUR_BUY;
-
-    function convertKZT() {
-        event.preventDefault()
-        const amountKZT = document.getElementById("amountKZT").value;
-        const currencyKZT = document.getElementById("currencyKZT").value;
-        let resultUSD, resultEUR;
-
-        if (currencyKZT === "USD") {
-            resultUSD = (amountKZT / KZT_TO_USD_SELL).toFixed(2);
-            resultEUR = (resultUSD * USD_TO_EUR_SELL).toFixed(2);
-        } else if (currencyKZT === "EUR") {
-            resultEUR = (amountKZT / KZT_TO_EUR_SELL).toFixed(2);
-            resultUSD = (resultEUR * EUR_TO_USD_SELL).toFixed(2);
-        }
-
-        document.getElementById("resultUSD").value = `${resultUSD || ""} USD`;
-        document.getElementById("resultEUR").value = `${resultEUR || ""} EUR`;
+    form {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #f5f5f5;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
     }
 
-    function convertUSD() {
-        event.preventDefault()
-        const amountUSD = document.getElementById("amountUSD").value;
-        const currencyUSD = document.getElementById("currencyUSD").value;
-        let resultKZT, resultEURUSD;
-
-        if (currencyUSD === "KZT") {
-            resultKZT = (amountUSD / USD_TO_KZT_BUY).toFixed(2);
-            resultEURUSD = (resultKZT * KZT_TO_EUR_BUY).toFixed(2);
-        } else if (currencyUSD === "EUR") {
-            resultEURUSD = (amountUSD * USD_TO_EUR_BUY).toFixed(2);
-            resultKZT = (resultEURUSD / KZT_TO_EUR_BUY).toFixed(2);
-        }
-
-        document.getElementById("resultKZT").value = `${resultKZT || ""} KZT`;
-        document.getElementById("resultEURUSD").value = `${resultEURUSD || ""} EUR`;
+    h1 {
+        text-align: center;
+        margin-bottom: 20px;
     }
 
-    function convertEUR() {
-        event.preventDefault()
-        const amountEUR = document.getElementById("amountEUR").value;
-        const currencyEUR = document.getElementById("currencyEUR").value;
-        let resultKZTEUR, resultUSDEUR;
 
-        if (currencyEUR === "KZT") {
-            resultKZTEUR = (amountEUR * KZT_TO_EUR_BUY).toFixed(2);
-            resultUSDEUR = (resultKZTEUR * EUR_TO_USD_BUY).toFixed(2);
-        } else if (currencyEUR === "USD") {
-            resultUSDEUR = (amountEUR * EUR_TO_USD_SELL).toFixed(2);
-            resultKZTEUR = (resultUSDEUR * USD_TO_KZT_SELL).toFixed(2);
-        }    document.getElementById("resultKZTEUR").value = `${resultKZTEUR || ""} KZT`;
-        document.getElementById("resultUSDEUR").value = `${resultUSDEUR || ""} USD`;
+    label {
+        display: block;
+        margin-bottom: 10px;
+        font-weight: bold;
     }
-</script>
-</body>
-</html>
+
+    select,
+    input[type="number"] {
+        display: block;
+        width: 25%;
+        padding: 10px;
+        border: 2px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+        margin-bottom: 20px;
+    }
+
+
+    button {
+        display: block;
+        width: 25%;
+        padding: 10px 20px;
